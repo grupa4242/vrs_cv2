@@ -74,6 +74,10 @@ int main(void)
   GPIOA->MODER |= 0x1<<(5*2);
   GPIOA->OSPEEDR |= 0x3<<(5*2);
   GPIOA->BSRRL = 1<<5;
+  GPIOA->ODR &= ~(uint16_t)(1<<5);
+  GPIOA->ODR ^= (uint16_t)(1<<5);
+  GPIOA->BSRRH = 1<<5;
+  GPIOA->ODR |= (uint16_t)(1<<5);
 
   /* Infinite loop */
   while (1)
