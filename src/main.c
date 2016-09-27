@@ -70,6 +70,10 @@ int main(void)
   /* TODO - Add your application code here */
   SysTick_Config(SystemCoreClock/1000);
 
+  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA,ENABLE);
+  GPIOA->MODER |= 0x1<<(5*2);
+  GPIOA->OSPEEDR |= 0x3<<(5*2);
+  GPIOA->BSRRL = 1<<5;
 
   /* Infinite loop */
   while (1)
