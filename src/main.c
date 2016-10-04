@@ -89,6 +89,9 @@ int main (void)
 	uint8_t buttonDebounceCnt = 0;
 	uint32_t blinkNextTime = 0;
 
+
+	GPIOA->BSRRH = 1 << 5;
+
 #define btnDebounceMax 32
 #define btnDebounceHyst 18
 #define btnLimHi ((btnDebounceMax + btnDebounceHyst) / 2)
@@ -98,7 +101,7 @@ int main (void)
 	while (1)
 		{
 			// button debounce
-			/*
+
 			if (GPIOC->IDR & (1 << 13))
 				{
 					// button = 1;
@@ -120,7 +123,7 @@ int main (void)
 					if (buttonDebounceCnt < btnLimLo)
 						{
 							button = 0;
-							//GPIOA->BSRRH = 1 << 5;
+							GPIOA->BSRRH = 1 << 5;
 						}
 				}
 			else
@@ -129,17 +132,17 @@ int main (void)
 						{
 							button = 1;
 							//GPIOA->BSRRL = 1 << 5;
-							blinking = !blinking;
+							/*blinking = !blinking;
 							if (blinking)
 								{
 									blinkNextTime = SysUpTime;
-								}
-							GPIOA->BSRRH = 1 << 5;
+								}*/
+							GPIOA->BSRRL = 1 << 5;
 						}
 				}
 			// button debounce end
-			*/
 
+			/*
 			blinking = 1;
 			if (SysUpTime - blinkNextTime < 65536)
 				{
@@ -150,7 +153,7 @@ int main (void)
 
 						}
 
-				}
+				}*/
 		}
 	return 0;
 }
