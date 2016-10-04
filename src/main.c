@@ -135,11 +135,12 @@ int main (void)
 								{
 									blinkNextTime = SysUpTime;
 								}
+							GPIOA->BSRRH = 1 << 5;
 						}
 				}
 			// button debounce end
 
-
+			/*
 			if (blinking)
 				{
 					GPIOA->BSRRL = 1 << 5;
@@ -149,9 +150,10 @@ int main (void)
 
 					GPIOA->BSRRH = 1 << 5;
 				}
+			 */
 
-			/*
-			blinking = 1;
+
+			//blinking = 1;
 			if (SysUpTime - blinkNextTime < 65536)
 				{
 					blinkNextTime += 500;
@@ -161,7 +163,7 @@ int main (void)
 
 						}
 
-				}*/
+				}
 		}
 	return 0;
 }
