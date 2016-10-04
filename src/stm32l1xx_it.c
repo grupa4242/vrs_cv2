@@ -156,7 +156,6 @@ void SysTick_Handler(void)
 
 /**
   * @}
-  */ 
-
+ */
 
 /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
