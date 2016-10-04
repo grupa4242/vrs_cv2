@@ -23,7 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32l1xx_it.h"
-/* #include "main.h" */
+#include "main.h" 
 
 /** @addtogroup Template_Project
   * @{
@@ -135,6 +135,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+  ++SysUpTime;
 }
 
 /******************************************************************************/
@@ -155,7 +156,6 @@ void SysTick_Handler(void)
 
 /**
   * @}
-  */ 
-
+ */
 
 /******************* (C) COPYRIGHT 2010 STMicroelectronics *****END OF FILE****/
