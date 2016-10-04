@@ -29,6 +29,7 @@ SOFTWARE.
 /* Includes */
 #include <stddef.h>
 #include "stm32l1xx.h"
+#include "main.h"
 
 
 /* Private typedef */
@@ -46,6 +47,9 @@ SOFTWARE.
 **
 **===========================================================================
 */
+
+uint32_t SysUpTime = 0;
+
 int main(void)
 {
   int i = 0;
@@ -68,6 +72,7 @@ int main(void)
   */
 
   /* TODO - Add your application code here */
+  SystemCoreClockUpdate();
   SysTick_Config(SystemCoreClock/1000);
 
   RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA,ENABLE);
@@ -85,24 +90,60 @@ int main(void)
   GPIOC->OSPEEDR |= 0x3<<(13*2);
 
   uint8_t button = 0;
-
-
+  uint8_t buttonDebounceCnt = 0;
+  #define btnDebounceMax 32
+  #define btnDebounceHyst 18
+  #define btnLimHi ((btnDebounceMax + btnDebounceHyst) / 2)
+  #define btnLimLo ((btnDebounceMax - btnDebounceHyst) / 2)
   /* Infinite loop */
   while (1)
   {
 
 	  if (GPIOC->IDR & (1<<13))
 	  {
-		  button = 1;
-		  GPIOA->BSRRL = 1<<5;
+		 // button = 1;
+		 // GPIOA->BSRRL = 1<<5;
+		  if (buttonDebounceCnt) buttonDebounceCnt--;
 
 	  }
 	  else
 	  {
-		  button = 0;
-		  GPIOA->BSRRH = 1<<5;
+		 // button = 0;
+		 // GPIOA->BSRRH = 1<<5;
+		  if (buttonDebounceCnt < btnDebounceMax - 2) buttonDebounceCnt++;
 	  }
+	  
+	  if (button)
+	{
+		if (buttonDebounceCnt < btnLimLo)
+		{
+			button = 0;
+			GPIOA->BSRRH = 1<<5;
+		}
+	}
+	else
+	{
+		if (buttonDebounceCnt > btnLimHi)
+		{
+			button = 1;
+			GPIOA->BSRRL = 1<<5;
+		}
+	}
 	//button = (GPIOC->IDR & (1<<13)) !=0;
+	
+	uint32_t blinkNextTime = 0;
+	
+	if (SysUpTime - blinkNextTime < 65536)
+	{
+		blinkNextTime += 500;
+		if (button)
+		{
+			GPIOA->ODR ^= (uint16_t)(1<<5);
+			
+		}
+		
+		
+	}
   }
   return 0;
 }
