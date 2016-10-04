@@ -49,3 +49,6 @@ Temporary Items
 # build folders
 Debug
 Release
+
+#atollic truestudio settings
+.settings/
