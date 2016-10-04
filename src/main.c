@@ -123,7 +123,6 @@ int main (void)
 					if (buttonDebounceCnt < btnLimLo)
 						{
 							button = 0;
-							GPIOA->BSRRH = 1 << 5;
 						}
 				}
 			else
@@ -131,16 +130,25 @@ int main (void)
 					if (buttonDebounceCnt > btnLimHi)
 						{
 							button = 1;
-							//GPIOA->BSRRL = 1 << 5;
-							/*blinking = !blinking;
+							blinking = !blinking;
 							if (blinking)
 								{
 									blinkNextTime = SysUpTime;
-								}*/
-							GPIOA->BSRRL = 1 << 5;
+								}
 						}
 				}
 			// button debounce end
+
+
+			if (blinking)
+				{
+					GPIOA->BSRRL = 1 << 5;
+				}
+			else
+				{
+
+					GPIOA->BSRRH = 1 << 5;
+				}
 
 			/*
 			blinking = 1;
